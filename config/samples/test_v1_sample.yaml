@@ -1,0 +1,6 @@
+apiVersion: test.zoetrope.github.io/v1
+kind: Sample
+metadata:
+  name: sample-sample
+spec:
+  # TODO(user): Add fields here

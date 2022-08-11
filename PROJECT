@@ -1,0 +1,20 @@
+domain: zoetrope.github.io
+layout:
+- go.kubebuilder.io/v3
+projectName: test-controller
+repo: github.com/zoetrope/test-controller
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: zoetrope.github.io
+  group: test
+  kind: Sample
+  path: github.com/zoetrope/test-controller/api/v1
+  version: v1
+  webhooks:
+    defaulting: true
+    validation: true
+    webhookVersion: v1
+version: "3"
