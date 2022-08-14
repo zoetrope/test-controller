@@ -1,12 +1,9 @@
 package controllers
 
 import (
-	"strconv"
-
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/gstruct"
-	corev1 "k8s.io/api/core/v1"
 )
 
 var _ = Describe("gstruct", func() {
@@ -44,19 +41,3 @@ var _ = Describe("gstruct", func() {
 		})))
 	})
 })
-
-func containerIdentity(element interface{}) string {
-	container, ok := element.(corev1.Container)
-	if !ok {
-		return ""
-	}
-	return container.Name
-}
-
-func portIdentity(element interface{}) string {
-	port, ok := element.(corev1.ContainerPort)
-	if !ok {
-		return ""
-	}
-	return strconv.FormatInt(int64(port.ContainerPort), 10)
-}

@@ -35,10 +35,14 @@ spec:
           spec:
             description: SampleSpec defines the desired state of Sample
             properties:
-              foo:
-                description: Foo is an example field of Sample. Edit sample_types.go
-                  to remove/update
+              image:
                 type: string
+              replicas:
+                default: 1
+                format: int32
+                type: integer
+            required:
+            - image
             type: object
           status:
             description: SampleStatus defines the observed state of Sample

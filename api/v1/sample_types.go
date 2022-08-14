@@ -25,11 +25,12 @@ import (
 
 // SampleSpec defines the desired state of Sample
 type SampleSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// +kubebuilder:validation:Required
+	Image string `json:"image"`
 
-	// Foo is an example field of Sample. Edit sample_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// +kubebuilder:default=1
+	// +optional
+	Replicas *int32 `json:"replicas,omitempty"`
 }
 
 // SampleStatus defines the observed state of Sample

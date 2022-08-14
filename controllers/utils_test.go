@@ -1,12 +1,29 @@
 package controllers
 
 import (
-	"k8s.io/utils/pointer"
+	"strconv"
 
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/utils/pointer"
 )
+
+func containerIdentity(element interface{}) string {
+	container, ok := element.(corev1.Container)
+	if !ok {
+		return ""
+	}
+	return container.Name
+}
+
+func portIdentity(element interface{}) string {
+	port, ok := element.(corev1.ContainerPort)
+	if !ok {
+		return ""
+	}
+	return strconv.FormatInt(int64(port.ContainerPort), 10)
+}
 
 func createDeployment(image string) *appsv1.Deployment {
 	return &appsv1.Deployment{
