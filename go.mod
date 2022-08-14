@@ -3,6 +3,8 @@ module github.com/zoetrope/test-controller
 go 1.18
 
 require (
+	github.com/google/go-cmp v0.5.8
+	github.com/kralicky/kmatch v0.0.0-20220713045459-85a252b9275e
 	github.com/onsi/ginkgo/v2 v2.1.4
 	github.com/onsi/gomega v1.20.0
 	k8s.io/api v0.24.2
@@ -13,6 +15,7 @@ require (
 
 require (
 	cloud.google.com/go v0.81.0 // indirect
+	emperror.dev/errors v0.8.0 // indirect
 	github.com/Azure/go-autorest v14.2.0+incompatible // indirect
 	github.com/Azure/go-autorest/autorest v0.11.18 // indirect
 	github.com/Azure/go-autorest/autorest/adal v0.9.13 // indirect
@@ -37,7 +40,6 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/gnostic v0.5.7-v3refs // indirect
-	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/google/uuid v1.1.2 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
