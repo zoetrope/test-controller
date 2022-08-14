@@ -60,7 +60,7 @@ test: manifests generate fmt vet envtest ginkgo ## Run tests.
 
 .PHONY: test-debug
 test-debug: envtest ginkgo
-	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) -p path)" $(GINKGO) -r --fail-fast
+	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) -p path)" DEBUG=true $(GINKGO) -r --fail-fast
 
 ##@ Build
 

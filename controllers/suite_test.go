@@ -17,7 +17,10 @@ limitations under the License.
 package controllers
 
 import (
+	"fmt"
+	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -73,8 +76,26 @@ var _ = BeforeSuite(func() {
 
 })
 
+var suiteFailed = false
+
 var _ = AfterSuite(func() {
 	By("tearing down the test environment")
+
+	if os.Getenv("DEBUG") == "true" && suiteFailed {
+		fmt.Printf(`
+
+You can use the following command to investigate the failure:
+$ kubectl %s
+
+When you have finished investigation, clean up with the following commands:
+$ pkill kube-apiserver
+$ pkill etcd
+$ rm -rf %s
+`, strings.Join(testEnv.ControlPlane.KubeCtl().Opts, " "), testEnv.ControlPlane.APIServer.CertDir)
+
+		return
+	}
+
 	err := testEnv.Stop()
 	Expect(err).NotTo(HaveOccurred())
 })
