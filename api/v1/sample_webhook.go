@@ -89,7 +89,7 @@ func (r *Sample) validate() error {
 	} else {
 		images := strings.Split(r.Spec.Image, ":")
 		if len(images) != 2 {
-			errs = append(errs, field.Invalid(field.NewPath("spec", "image"), r.Spec.Image, "image is not valid formt"))
+			errs = append(errs, field.Invalid(field.NewPath("spec", "image"), r.Spec.Image, "image is not valid format"))
 		} else if images[1] == "latest" {
 			errs = append(errs, field.Invalid(field.NewPath("spec", "image"), r.Spec.Image, "image cannot have latest tag"))
 		}

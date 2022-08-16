@@ -28,7 +28,6 @@ type SampleSpec struct {
 	// +kubebuilder:validation:Required
 	Image string `json:"image"`
 
-	// +kubebuilder:default=1
 	// +optional
 	Replicas *int32 `json:"replicas,omitempty"`
 }
