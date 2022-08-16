@@ -54,11 +54,11 @@ var diffOptions = []cmp.Option{
 }
 
 func (matcher *semanticMatcher) FailureMessage(actual interface{}) (message string) {
-	diff := cmp.Diff(actual, matcher.expected, diffOptions...)
+	diff := cmp.Diff(matcher.expected, actual, diffOptions...)
 	return fmt.Sprintf("diff: \n%s", diff)
 }
 
 func (matcher *semanticMatcher) NegatedFailureMessage(actual interface{}) (message string) {
-	diff := cmp.Diff(actual, matcher.expected, diffOptions...)
+	diff := cmp.Diff(matcher.expected, actual, diffOptions...)
 	return fmt.Sprintf("diff: \n%s", diff)
 }

@@ -12,7 +12,7 @@ import (
 func containerIdentity(element interface{}) string {
 	container, ok := element.(corev1.Container)
 	if !ok {
-		return ""
+		panic("Cannot cast to Container")
 	}
 	return container.Name
 }
@@ -20,7 +20,7 @@ func containerIdentity(element interface{}) string {
 func portIdentity(element interface{}) string {
 	port, ok := element.(corev1.ContainerPort)
 	if !ok {
-		return ""
+		panic("Cannot cast to ContainerPort")
 	}
 	return strconv.FormatInt(int64(port.ContainerPort), 10)
 }

@@ -32,7 +32,7 @@ var _ = Describe("SemanticEqual", func() {
 	})
 
 	It("should equal original pod", func() {
-		pod := corev1.Pod{
+		pod := &corev1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace: "default",
 				Name:      "ubuntu",
@@ -48,7 +48,7 @@ var _ = Describe("SemanticEqual", func() {
 		}
 		originalPod := pod.DeepCopy()
 
-		err := k8sClient.Create(ctx, &pod)
+		err := k8sClient.Create(ctx, pod)
 		Expect(err).ShouldNot(HaveOccurred())
 
 		Expect(pod.Spec).ShouldNot(Equal(originalPod.Spec))
