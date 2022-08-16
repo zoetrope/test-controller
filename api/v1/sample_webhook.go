@@ -17,7 +17,12 @@ limitations under the License.
 package v1
 
 import (
+	"strings"
+
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/util/validation/field"
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
@@ -42,7 +47,11 @@ var _ webhook.Defaulter = &Sample{}
 func (r *Sample) Default() {
 	samplelog.Info("default", "name", r.Name)
 
-	// TODO(user): fill in your defaulting logic.
+	defaultReplicas := int32(1)
+
+	if r.Spec.Replicas == nil {
+		r.Spec.Replicas = &defaultReplicas
+	}
 }
 
 // TODO(user): change verbs to "verbs=create;update;delete" if you want to enable deletion validation.
@@ -54,15 +63,42 @@ var _ webhook.Validator = &Sample{}
 func (r *Sample) ValidateCreate() error {
 	samplelog.Info("validate create", "name", r.Name)
 
-	// TODO(user): fill in your validation logic upon object creation.
-	return nil
+	return r.validate()
 }
 
 // ValidateUpdate implements webhook.Validator so a webhook will be registered for the type
 func (r *Sample) ValidateUpdate(old runtime.Object) error {
 	samplelog.Info("validate update", "name", r.Name)
 
-	// TODO(user): fill in your validation logic upon object update.
+	return r.validate()
+}
+
+func (r *Sample) validate() error {
+	var errs field.ErrorList
+
+	if r.Spec.Replicas == nil {
+		errs = append(errs, field.Invalid(field.NewPath("spec", "replicas"), r.Spec.Replicas, "replicas cannot be empty"))
+	} else if *r.Spec.Replicas < 1 {
+		errs = append(errs, field.Invalid(field.NewPath("spec", "replicas"), r.Spec.Replicas, "replicas should be grater than 0"))
+	}
+
+	if len(r.Spec.Image) == 0 {
+		errs = append(errs, field.Invalid(field.NewPath("spec", "image"), r.Spec.Image, "image cannot be empty"))
+	} else if !strings.Contains(r.Spec.Image, ":") {
+		errs = append(errs, field.Invalid(field.NewPath("spec", "image"), r.Spec.Image, "image should have a tag"))
+	} else {
+		images := strings.Split(r.Spec.Image, ":")
+		if len(images) != 2 {
+			errs = append(errs, field.Invalid(field.NewPath("spec", "image"), r.Spec.Image, "image is not valid formt"))
+		} else if images[1] == "latest" {
+			errs = append(errs, field.Invalid(field.NewPath("spec", "image"), r.Spec.Image, "image cannot have latest tag"))
+		}
+	}
+
+	if len(errs) > 0 {
+		err := apierrors.NewInvalid(schema.GroupKind{Group: GroupVersion.Group, Kind: "Sample"}, r.Name, errs)
+		return err
+	}
 	return nil
 }
 
@@ -70,6 +106,5 @@ func (r *Sample) ValidateUpdate(old runtime.Object) error {
 func (r *Sample) ValidateDelete() error {
 	samplelog.Info("validate delete", "name", r.Name)
 
-	// TODO(user): fill in your validation logic upon object deletion.
 	return nil
 }
