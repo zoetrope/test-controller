@@ -24,8 +24,8 @@ var _ = Describe("Webhook Test", func() {
 			},
 		}
 		err := k8sClient.Create(ctx, sample)
-		Expect(err).Should(HaveOccurred())
 
-		Expect(err.Error()).Should(ContainSubstring("image cannot have latest tag"))
+		Expect(err).Should(HaveStatusErrorReason(Equal(metav1.StatusReasonInvalid)))
+		Expect(err).Should(HaveStatusErrorMessage(ContainSubstring("image cannot have latest tag")))
 	})
 })
